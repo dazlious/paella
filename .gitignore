@@ -7,3 +7,5 @@ build
 node_modules
 repository_test/repository/local*
 .idea
+*.iml
+!beuth/**

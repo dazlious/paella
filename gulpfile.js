@@ -146,9 +146,13 @@ gulp.task("setupBower", function() {
 	config.outDir = "../bower-paella/";
 });
 
+gulp.task("beuth", function() {
+    return gulp.src('beuth/**')
+        .pipe(gulp.dest('./'));
+});
 
-gulp.task("build", ["compile","styles","dictionary","copy"]);
-gulp.task("buildDebug", ["compileDebug","styles","dictionary","copy"]);
+gulp.task("build", ["compile","styles","dictionary","copy", "beuth"]);
+gulp.task("buildDebug", ["compileDebug","styles","dictionary","copy", "beuth"]);
 gulp.task("buildBower", ["setupBower","build"]);
 
 gulp.task("watch", function() {
