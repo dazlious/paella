@@ -17,6 +17,14 @@ var config = {
 	outDir:'build/'
 };
 
+function runSequence( tasks ) {
+    if( !tasks || tasks.length <= 0 ) return;
+    const task = tasks[0];
+    gulp.start( task, function() {
+        runSequence( tasks.slice(1) );
+    });
+}
+
 function getVersion() {
 	let pkg = require('./package.json');
 	let rev = exec('git show --oneline -s');
@@ -102,7 +110,10 @@ gulp.task("copy", function() {
 			.pipe(gulp.dest(`${config.outDir}player/resources/images`)),
 
 		gulp.src(['index.html','test.html'])
-			.pipe(gulp.dest(`${config.outDir}player/`))
+			.pipe(gulp.dest(`${config.outDir}player/`)),
+
+        gulp.src(['beuth/build/player/**','!beuth/build/player/**/*.less'])
+            .pipe(gulp.dest(`${config.outDir}player/`))
 	];
 
 	function addPlugins(pluginPath) {
@@ -146,19 +157,24 @@ gulp.task("setupBower", function() {
 	config.outDir = "../bower-paella/";
 });
 
-gulp.task("beuth", function() {
-    return gulp.src('beuth/**')
+gulp.task("pre-beuth", function() {
+    return gulp.src('beuth/**/*.less')
         .pipe(gulp.dest('./'));
 });
 
-gulp.task("build", ["compile","styles","dictionary","copy", "beuth"]);
-gulp.task("buildDebug", ["compileDebug","styles","dictionary","copy", "beuth"]);
+gulp.task("build", ["pre-beuth"], function() {
+    runSequence(["compile","styles","dictionary","copy"]);
+});
+gulp.task("buildDebug", ["pre-beuth"], function() {
+    runSequence(["compileDebug","styles","dictionary","copy"]);
+});
 gulp.task("buildBower", ["setupBower","build"]);
 
 gulp.task("watch", function() {
 	return gulp.watch([
 		'index.html',
-		'config/**',
+        'beuth/**',
+        'config/**',
 		'plugins/**',
 		'vendor/plugins/**',
 		'src/*.js'
@@ -166,13 +182,14 @@ gulp.task("watch", function() {
 });
 
 gulp.task("watchDebug", function() {
-	return gulp.watch([
+    return gulp.watch([
 		'index.html',
-		'resources/**',
+        'beuth/**',
+        'resources/**',
 		'repository_test/**',
 		'config/**',
 		'plugins/**',
-		'vendor/plugins/**',
+        'vendor/plugins/**',
 		'src/*.js'
 	],["buildDebug"]);
 });
