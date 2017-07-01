@@ -1,17 +1,44 @@
-# Paella Player #
+# Paella Player für die BHT Berlin
 
-Paella (pronounced 'paeja') Player is the new HTML 5 multistream player, developed by the Universitat Politècnica de València. It is specially designed for lecture recordings, like Opencast Lectures or Polimedia pills.
+Dieses Projekt umfasst den gesamten Player. Es ist ein Fork von dem [Paella Player](https://github.com/polimediaupv/paella).
 
-Paella Player is capable of playing multiple audio & video streams synchronously and can be integrated into almost any video platform using it's powerfull and easy to use plugin's architecture.
+Das Projekt erweitert den Player um die Funktionalitäten und das Aussehen für die Beuth Hochschule.
 
-You can take your first contact with Paella going to [Paella Player Web Page](http://paellaplayer.upv.es).
+Material (PSDs): beuth-material/
+Erweiterungen des originalen Projekts: beuth/
 
-![Paella Player Logo](http://paellaplayer.upv.es/resources/logo_paella.png)
+Alle Dateien im Unterordner beuth werden durch das Buildtool in den dist-Ordner kopiert und überschreiben die Dateien, welche im src-Ordner definiert wurden.
+
+Alle watch-/build-Tasks wurden mit dem task beuth erweitert. 
+
+## Einstellungen
+
+### Anordnung der Videos
+Konfig: `/beuth/player/config/profiles/profiles.json`
+
+Hiermit kann gesteuert werden, wie die Videos angeordnet werden können.
+
+### Player-Config
+Konfig: `beuth/build/player/config/config.json`
+
+Hiermit lassen sich alle Einstellungen für den Player vornehmen.
 
 
-## Build and Install ##
+### Styling
+Url: `beuth/resources/style/skins/beuth.less`
 
-To build Paella, please read the [documentation](doc/README.md).
+Das gesamte Styling wurde auch wie das Originalprojekt mit LESS umgesetzt, damit die Variablen genutzt werden können. 
+Die Controls wurden zusätzlich überschrieben, da andere Icons genommen wurden (FontAwesome Icons)
 
-[![build status](https://secure.travis-ci.org/polimediaupv/paella.png)](http://travis-ci.org/polimediaupv/paella)
+## Building
 
+```
+cd path/to/repository
+npm i
+npm i gulp -g
+gulp build // baut eine Version
+```
+
+Einfach Veränderungen an diesem Projekt pushen und über das paella-matterhorn Repository bauen und deployen. Der Player muss an sich nur zum Testen gebuildet werden.
+ 
+ 
